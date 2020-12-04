@@ -1,0 +1,96 @@
+Version 4.0 HI-TECH Software Intermediate Code
+[v F426 `(v ~T0 @X0 0 tf ]
+"8 ex.c
+[; ;ex.c: 8:     while(!I2C1_Open(address));
+[c E353 0 1 2 .. ]
+[n E353 . I2C1_NOERR I2C1_BUSY I2C1_FAIL  ]
+"55 ./mcc_generated_files/i2c1_master.h
+[; ;./mcc_generated_files/i2c1_master.h: 55: i2c1_error_t I2C1_Open(i2c1_address_t address);
+[v _I2C1_Open `(E353 ~T0 @X0 0 ef1`uc ]
+"9 ex.c
+[; ;ex.c: 9:     I2C1_SetDataCompleteCallback(wr1RegCompleteHandlerer,&data);
+[c E358 1 2 3 4 5 .. ]
+[n E358 . I2C1_STOP I2C1_RESTART_READ I2C1_RESTART_WRITE I2C1_CONTINUE I2C1_RESET_LINK  ]
+[v F391 `(E358 ~T0 @X0 0 tf1`*v ]
+"118 ./mcc_generated_files/i2c1_master.h
+[; ;./mcc_generated_files/i2c1_master.h: 118: void I2C1_SetDataCompleteCallback(i2c1_callback_t cb, void *ptr);
+[v _I2C1_SetDataCompleteCallback `(v ~T0 @X0 0 ef2`*F391`*v ]
+"4 ex.c
+[; ;ex.c: 4: static i2c1_operations_t wr1RegCompleteHandlerer(void *ptr);
+[v _wr1RegCompleteHandlerer `(E358 ~T0 @X0 0 sf1`*v ]
+[v F405 `(E358 ~T0 @X0 0 tf1`*v ]
+"138 ./mcc_generated_files/i2c1_master.h
+[; ;./mcc_generated_files/i2c1_master.h: 138: void I2C1_SetAddressNackCallback(i2c1_callback_t cb, void *ptr);
+[v _I2C1_SetAddressNackCallback `(v ~T0 @X0 0 ef2`*F405`*v ]
+[v F441 `(E358 ~T0 @X0 0 tf1`*v ]
+"65
+[; ;./mcc_generated_files/i2c1_master.h: 65: i2c1_error_t I2C1_Close(void);
+[v _I2C1_Close `(E353 ~T0 @X0 0 ef ]
+"106
+[; ;./mcc_generated_files/i2c1_master.h: 106: void I2C1_SetBuffer(void *buffer, size_t bufferSize);
+[v _I2C1_SetBuffer `(v ~T0 @X0 0 ef2`*v`ui ]
+[v F445 `(E358 ~T0 @X0 0 tf1`*v ]
+"167 ./mcc_generated_files/i2c1_master.h
+[; ;./mcc_generated_files/i2c1_master.h: 167: void (*MSSP1_InterruptHandler)(void);
+[v _MSSP1_InterruptHandler `*F426 ~T0 @X0 1 e ]
+"6 ex.c
+[; ;ex.c: 6: void I2C1_Writer(i2c1_address_t address, uint8_t data)
+[v _I2C1_Writer `(v ~T0 @X0 1 ef2`uc`uc ]
+"7
+[; ;ex.c: 7: {
+{
+[e :U _I2C1_Writer ]
+"6
+[; ;ex.c: 6: void I2C1_Writer(i2c1_address_t address, uint8_t data)
+[v _address `uc ~T0 @X0 1 r1 ]
+[v _data `uc ~T0 @X0 1 r2 ]
+"7
+[; ;ex.c: 7: {
+[f ]
+"8
+[; ;ex.c: 8:     while(!I2C1_Open(address));
+[e $U 4  ]
+[e :U 5 ]
+[e :U 4 ]
+[e $ ! != -> ( _I2C1_Open (1 _address `ui -> -> 0 `i `ui 5  ]
+[e :U 6 ]
+"9
+[; ;ex.c: 9:     I2C1_SetDataCompleteCallback(wr1RegCompleteHandlerer,&data);
+[e ( _I2C1_SetDataCompleteCallback (2 , &U _wr1RegCompleteHandlerer -> &U _data `*v ]
+"10
+[; ;ex.c: 10:     I2C1_SetAddressNackCallback(((void*)0),((void*)0));
+[e ( _I2C1_SetAddressNackCallback (2 , -> -> -> 0 `i `*v `*F441 -> -> 0 `i `*v ]
+"12
+[; ;ex.c: 12:     I2C1_Close();
+[e ( _I2C1_Close ..  ]
+"14
+[; ;ex.c: 14: }
+[e :UE 3 ]
+}
+"16
+[; ;ex.c: 16: static i2c1_operations_t wr1RegCompleteHandlerer(void *ptr)
+[v _wr1RegCompleteHandlerer `(E358 ~T0 @X0 1 sf1`*v ]
+"17
+[; ;ex.c: 17: {
+{
+[e :U _wr1RegCompleteHandlerer ]
+"16
+[; ;ex.c: 16: static i2c1_operations_t wr1RegCompleteHandlerer(void *ptr)
+[v _ptr `*v ~T0 @X0 1 r1 ]
+"17
+[; ;ex.c: 17: {
+[f ]
+"18
+[; ;ex.c: 18:     I2C1_SetBuffer(ptr,1);
+[e ( _I2C1_SetBuffer (2 , _ptr -> -> 1 `i `ui ]
+"19
+[; ;ex.c: 19:     I2C1_SetDataCompleteCallback(((void*)0),((void*)0));
+[e ( _I2C1_SetDataCompleteCallback (2 , -> -> -> 0 `i `*v `*F445 -> -> 0 `i `*v ]
+"20
+[; ;ex.c: 20:     return I2C1_CONTINUE;
+[e ) . `E358 3 ]
+[e $UE 7  ]
+"21
+[; ;ex.c: 21: }
+[e :UE 7 ]
+}
