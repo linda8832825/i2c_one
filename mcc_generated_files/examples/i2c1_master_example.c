@@ -45,11 +45,11 @@ uint16_t I2C1_Read2ByteRegister(i2c1_address_t address, uint8_t reg)
 void I2C1_Write1ByteRegister(i2c1_address_t address, uint8_t reg, uint8_t data)
 {
     while(!I2C1_Open(address)); // sit here until we get the bus..
-    I2C1_SetDataCompleteCallback(wr1RegCompleteHandler,&data);
+    I2C1_SetDataCompleteCallback(wr1RegCompleteHandler,&data);//傳完所有東西後設置為被調用
     I2C1_SetBuffer(&reg,1);
-    I2C1_SetAddressNackCallback(NULL,NULL); //NACK polling?
+    I2C1_SetAddressNackCallback(NULL,NULL); //NACK polling? //return stop
     I2C1_MasterWrite();
-    while(I2C1_BUSY == I2C1_Close()); // sit here until finished.
+    while(I2C1_BUSY == I2C1_Close()); //I2C1_Close()正確執行完會回傳I2C1_BUSY
 }
 
 void I2C1_Write2ByteRegister(i2c1_address_t address, uint8_t reg, uint16_t data)

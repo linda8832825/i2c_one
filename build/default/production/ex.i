@@ -348,9 +348,8 @@ void I2C1_Writer(i2c1_address_t address, uint8_t data)
     while(!I2C1_Open(address));
     I2C1_SetDataCompleteCallback(wr1RegCompleteHandlerer,&data);
     I2C1_SetAddressNackCallback(((void*)0),((void*)0));
-
-    I2C1_Close();
-
+    I2C1_MasterWrite();
+    while(I2C1_BUSY == I2C1_Close());
 }
 
 static i2c1_operations_t wr1RegCompleteHandlerer(void *ptr)

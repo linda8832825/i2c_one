@@ -1,49 +1,3 @@
-/**
-  I2C1 Generated Driver File
-
-  @Company
-    Microchip Technology Inc.
-
-  @File Name
-    i2c1_master.c
-
-  @Summary
-    This is the generated driver implementation file for the I2C1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
-
-  @Description
-    This header file provides implementations for driver APIs for I2C1.
-    Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.6
-        Device            :  PIC16F18854
-        Driver Version    :  1.0.2
-    The generated drivers are tested against the following:
-        Compiler          :  XC8 2.30 and above or later
-        MPLAB             :  MPLAB X 5.40
-*/
-
-/*
-    (c) 2018 Microchip Technology Inc. and its subsidiaries. 
-    
-    Subject to your compliance with these terms, you may use Microchip software and any 
-    derivatives exclusively with Microchip products. It is your responsibility to comply with third party 
-    license terms applicable to your use of third party software (including open source software) that 
-    may accompany Microchip software.
-    
-    THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER 
-    EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY 
-    IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS 
-    FOR A PARTICULAR PURPOSE.
-    
-    IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
-    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
-    WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP 
-    HAS BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO 
-    THE FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL 
-    CLAIMS IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT 
-    OF FEES, IF ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS 
-    SOFTWARE.
-*/
-
 #include "i2c1_master.h"
 #include <xc.h>
 
@@ -199,10 +153,10 @@ i2c1_error_t I2C1_Open(i2c1_address_t address)
         I2C1_Status.callbackTable[I2C1_TIMEOUT]=I2C1_CallbackReturnReset;
         I2C1_Status.callbackPayload[I2C1_TIMEOUT] = NULL;
         
-        I2C1_SetInterruptHandler(I2C1_MasterIsr);
-        I2C1_MasterClearIrq();
-        I2C1_MasterOpen();
-        I2C1_MasterEnableIrq();
+        I2C1_SetInterruptHandler(I2C1_MasterIsr);//中斷時要執行的指標
+        I2C1_MasterClearIrq();//等待傳輸
+        I2C1_MasterOpen();//配置scl和sda
+        I2C1_MasterEnableIrq();//允許MSSPx 中斷
         returnValue = I2C1_NOERR;
     }
     return returnValue;
@@ -541,7 +495,7 @@ i2c1_operations_t I2C1_CallbackRestartRead(void *funPtr)
 
 
 /* I2C1 Register Level interfaces */
-static inline bool I2C1_MasterOpen(void)
+static inline bool I2C1_MasterOpen(void)//配置scl和sda
 {
     if(!SSP1CON1bits.SSPEN)
     {
@@ -586,7 +540,7 @@ static inline void I2C1_MasterStartRx(void)
     SSP1CON2bits.RCEN = 1;
 }
 
-static inline void I2C1_MasterStart(void)
+static inline void I2C1_MasterStart(void)//產生start然後傳資料出去 //returnValue = I2C1_BUSY
 {
     SSP1CON2bits.SEN = 1;
 }
@@ -626,7 +580,7 @@ static inline bool I2C1_MasterIsRxBufFull(void)
 
 static inline void I2C1_MasterEnableIrq(void)
 {
-    PIE3bits.SSP1IE = 1;
+    PIE3bits.SSP1IE = 1;//1 =允許MSSPx 中斷
 }
 
 static inline bool I2C1_MasterIsIrqEnabled(void)
@@ -641,7 +595,7 @@ static inline void I2C1_MasterDisableIrq(void)
 
 static inline void I2C1_MasterClearIrq(void)
 {
-    PIR3bits.SSP1IF = 0;
+    PIR3bits.SSP1IF = 0;//0 =等待傳輸/接收/bus 狀態進度
 }
 
 static inline void I2C1_MasterSetIrq(void)
